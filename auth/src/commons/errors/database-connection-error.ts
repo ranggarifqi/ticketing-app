@@ -1,4 +1,9 @@
-export class DatabaseConnectionError extends Error {
+import { CustomError } from ".";
+import { ErrorResponse } from "../responses/error";
+
+export class DatabaseConnectionError extends Error implements CustomError {
+  public statusCode: number = 500;
+
   private reason: string = "Error connecting to database";
 
   constructor() {
@@ -10,5 +15,11 @@ export class DatabaseConnectionError extends Error {
 
   public getReason = () => {
     return this.reason;
+  };
+
+  public serializeError = (): ErrorResponse => {
+    return {
+      errors: [{ message: this.reason }],
+    };
   };
 }

@@ -1,7 +1,12 @@
 import { ValidationError } from "express-validator";
+import { CustomError } from ".";
+import { ErrorProps, ErrorResponse } from "../responses/error";
 
-export class RequestValidationError extends Error {
+export class RequestValidationError extends Error implements CustomError {
+  public statusCode: number = 400;
+
   private errors: ValidationError[];
+
   constructor(errors: ValidationError[]) {
     super();
     this.errors = errors;
@@ -13,4 +18,17 @@ export class RequestValidationError extends Error {
   public getErrors = () => {
     return this.errors;
   };
+
+  public serializeError(): ErrorResponse {
+    const formattedErrors: ErrorProps[] = this.errors.map((v) => {
+      return {
+        message: v.msg,
+        field: v.param,
+      };
+    });
+
+    return {
+      errors: formattedErrors,
+    };
+  }
 }

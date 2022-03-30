@@ -1,4 +1,5 @@
 import express from "express";
+import 'express-async-errors'; // This module will enable us to use `throw` keyword in an async route handler
 import { json } from "body-parser";
 
 import { currentUserRouter } from "./routes/current-user";
@@ -16,7 +17,8 @@ app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
 
-app.all("*", () => {
+// Example case of throwing in an async handler. On default behaviour, we would need to use `next()`
+app.all("*", async () => {
   throw new RouteNotFoundError();
 });
 

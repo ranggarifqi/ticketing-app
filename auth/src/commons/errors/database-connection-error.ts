@@ -1,7 +1,7 @@
 import { CustomError } from ".";
 import { ErrorResponse } from "../responses/error";
 
-export class DatabaseConnectionError extends Error implements CustomError {
+export class DatabaseConnectionError extends CustomError {
   public statusCode: number = 500;
 
   private reason: string = "Error connecting to database";

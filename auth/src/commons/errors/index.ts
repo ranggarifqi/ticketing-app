@@ -1,6 +1,13 @@
 import { ErrorResponse } from "../responses/error";
 
-export interface CustomError {
-  statusCode: number;
-  serializeError(): ErrorResponse;
+export abstract class CustomError extends Error {
+  abstract statusCode: number;
+
+  constructor() {
+    super();
+
+    Object.setPrototypeOf(this, CustomError.prototype);
+  }
+
+  abstract serializeError(): ErrorResponse;
 }

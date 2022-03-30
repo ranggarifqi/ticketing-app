@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { DatabaseConnectionError } from "../commons/errors/database-connection-error";
-import { RequestValidationError } from "../commons/errors/request-validation-error";
-import { ErrorProps, ErrorResponse } from "../commons/responses/error";
+import { CustomError } from "../commons/errors";
+import { ErrorResponse } from "../commons/responses/error";
 
 export const errorHandler = (
   err: Error,
@@ -9,11 +8,7 @@ export const errorHandler = (
   res: Response<ErrorResponse>,
   next: NextFunction
 ) => {
-  if (err instanceof RequestValidationError) {
-    return res.status(err.statusCode).send(err.serializeError());
-  }
-
-  if (err instanceof DatabaseConnectionError) {
+  if (err instanceof CustomError) {
     return res.status(err.statusCode).send(err.serializeError());
   }
 

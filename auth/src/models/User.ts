@@ -1,4 +1,5 @@
 import { Schema, model, Model, Document } from "mongoose";
+import { PasswordHasher } from "../commons/PasswordHasher";
 
 interface IUser {
   email: string;
@@ -22,5 +23,13 @@ const schema = new Schema<IUser>({
 schema.statics.build = (attrs: IUser) => {
   return new User(attrs);
 };
+
+schema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    const hashedPassword = await PasswordHasher.toHash(this.get("password"));
+    this.set("password", hashedPassword);
+  }
+  next();
+});
 
 export const User = model<IUser, UserModel>("User", schema);

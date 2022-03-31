@@ -8,7 +8,7 @@ import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
 import { errorHandler } from "./middlewares/error-handler";
-import { RouteNotFoundError } from "./commons/errors/route-not-found-error";
+import { NotFoundError } from "./commons/errors/not-found-error";
 
 const app = express();
 app.use(json());
@@ -20,7 +20,7 @@ app.use(signupRouter);
 
 // Example case of throwing in an async handler. On default behaviour, we would need to use `next()`
 app.all("*", async () => {
-  throw new RouteNotFoundError();
+  throw new NotFoundError('Route not found');
 });
 
 app.use(errorHandler);

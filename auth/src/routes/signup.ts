@@ -39,7 +39,7 @@ router.post(
     /** Generate JWT */
     const userJWT = jwt.sign(
       { id: newUser.id, email: newUser.email },
-      "secret"
+      process.env.JWT_SECRET!
     );
 
     /** Store it on session object */

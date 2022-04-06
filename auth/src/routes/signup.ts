@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { BadRequestError } from "../commons/errors/bad-request-error";
 import { RequestValidationError } from "../commons/errors/request-validation-error";
 import { INVALID_EMAIL_MSG } from "../commons/validations/errorMessages";
+import { validateRequest } from "../middlewares/request-validation";
 import { User } from "../models/User";
 
 const router = express.Router();
@@ -18,15 +19,9 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage("Password must be between 4 and 20 characters"),
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
-
     const { email, password } = req.body;
-
-    console.log("Creating a user with credentials", { email, password });
 
     const existingUser = await User.findOne({ email }).exec();
 

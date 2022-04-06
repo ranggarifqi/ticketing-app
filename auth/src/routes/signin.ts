@@ -6,6 +6,7 @@ import { RequestValidationError } from "../commons/errors/request-validation-err
 import { UnauthorizedError } from "../commons/errors/unauthorized-error";
 import { PasswordHasher } from "../commons/PasswordHasher";
 import { INVALID_EMAIL_MSG } from "../commons/validations/errorMessages";
+import { validateRequest } from "../middlewares/request-validation";
 import { User } from "../models/User";
 
 const router = express.Router();
@@ -18,12 +19,8 @@ router.post(
     body("email").isEmail().withMessage(INVALID_EMAIL_MSG),
     body("password").trim().notEmpty().withMessage("Password must be provided"),
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
-
     const { email, password } = req.body;
 
     const foundUser = await User.findOne({ email }).exec();

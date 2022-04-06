@@ -15,10 +15,22 @@ interface UserDoc extends Document {
   password: string;
 }
 
-const schema = new Schema<IUser>({
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-});
+const schema = new Schema<IUser>(
+  {
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+  },
+  {
+    toJSON: {
+      transform: (doc, res) => {
+        res.id = res._id;
+        delete res.password;
+        delete res.__v;
+        delete res._id;
+      },
+    },
+  }
+);
 
 schema.statics.build = (attrs: IUser) => {
   return new User(attrs);

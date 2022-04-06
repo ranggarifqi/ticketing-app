@@ -1,13 +1,12 @@
 import express, { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
-import { RequestValidationError } from "../commons/errors/request-validation-error";
 import { UnauthorizedError } from "../commons/errors/unauthorized-error";
 import { PasswordHasher } from "../commons/PasswordHasher";
 import { INVALID_EMAIL_MSG } from "../commons/validations/errorMessages";
 import { validateRequest } from "../middlewares/request-validation";
-import { User } from "../models/User";
+import { User, UserJWTPayload } from "../models/User";
 
 const router = express.Router();
 
@@ -36,10 +35,12 @@ router.post(
       throw new UnauthorizedError(LOGIN_FAILED_MSG);
     }
 
-    const userJWT = jwt.sign(
-      { id: foundUser.id, email: foundUser.email },
-      process.env.JWT_SECRET!
-    );
+    const jwtPayload: UserJWTPayload = {
+      id: foundUser.id,
+      email: foundUser.email,
+    };
+
+    const userJWT = jwt.sign(jwtPayload, process.env.JWT_SECRET!);
 
     req.session = {
       jwt: userJWT,

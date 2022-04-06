@@ -1,12 +1,11 @@
 import express, { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
 import { BadRequestError } from "../commons/errors/bad-request-error";
-import { RequestValidationError } from "../commons/errors/request-validation-error";
 import { INVALID_EMAIL_MSG } from "../commons/validations/errorMessages";
 import { validateRequest } from "../middlewares/request-validation";
-import { User } from "../models/User";
+import { User, UserJWTPayload } from "../models/User";
 
 const router = express.Router();
 
@@ -33,10 +32,11 @@ router.post(
     await newUser.save();
 
     /** Generate JWT */
-    const userJWT = jwt.sign(
-      { id: newUser.id, email: newUser.email },
-      process.env.JWT_SECRET!
-    );
+    const jwtPayload: UserJWTPayload = {
+      id: newUser.id,
+      email: newUser.email,
+    };
+    const userJWT = jwt.sign(jwtPayload, process.env.JWT_SECRET!);
 
     /** Store it on session object */
     req.session = {

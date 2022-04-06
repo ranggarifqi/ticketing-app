@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 import { BadRequestError } from "../commons/errors/bad-request-error";
 import { RequestValidationError } from "../commons/errors/request-validation-error";
+import { INVALID_EMAIL_MSG } from "../commons/validations/errorMessages";
 import { User } from "../models/User";
 
 const router = express.Router();
@@ -11,7 +12,7 @@ const router = express.Router();
 router.post(
   "/api/users/signup",
   [
-    body("email").isEmail().withMessage("Must be a valid email"),
+    body("email").isEmail().withMessage(INVALID_EMAIL_MSG),
     body("password")
       .trim()
       .isLength({ min: 4, max: 20 })

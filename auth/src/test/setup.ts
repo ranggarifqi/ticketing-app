@@ -6,8 +6,10 @@ import { app } from "../app";
 let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
-  mongo = new MongoMemoryServer();
-  const mongoURI = await mongo.getUri();
+  process.env.JWT_SECRET = "testsecret";
+  
+  mongo = await MongoMemoryServer.create();
+  const mongoURI = mongo.getUri();
 
   await mongoose.connect(mongoURI);
 });

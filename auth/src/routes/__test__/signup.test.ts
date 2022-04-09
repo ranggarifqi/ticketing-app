@@ -1,8 +1,8 @@
 import request from "supertest";
+import { ErrorResponse } from "@ranggarp-ticketing/common";
 
 import { app } from "../../app";
 import { User } from "../../models/User";
-import { ErrorResponse } from "../../commons/responses/error";
 
 it("returns a 201 on successful signup", async () => {
   const response = await request(app).post("/api/users/signup").send({

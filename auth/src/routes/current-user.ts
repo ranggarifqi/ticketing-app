@@ -1,5 +1,5 @@
 import express from "express";
-import { jwtAuth } from "../middlewares/jwt-auth";
+import { jwtAuth } from "@ranggarp-ticketing/common";
 
 const router = express.Router();
 

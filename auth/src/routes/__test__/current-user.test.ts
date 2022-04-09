@@ -1,6 +1,7 @@
 import request from "supertest";
+import { ErrorResponse } from "@ranggarp-ticketing/common";
+
 import { app } from "../../app";
-import { ErrorResponse } from "../../commons/responses/error";
 import { signIn } from "../../test/auth-helper";
 
 it("returns a 401 when user is not signed in", async () => {

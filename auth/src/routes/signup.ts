@@ -2,10 +2,10 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
-import { BadRequestError } from "../commons/errors/bad-request-error";
+import { BadRequestError, validateRequest, UserJWTPayload } from "@ranggarp-ticketing/common";
+
 import { INVALID_EMAIL_MSG } from "../commons/validations/errorMessages";
-import { validateRequest } from "../middlewares/request-validation";
-import { User, UserJWTPayload } from "../models/User";
+import { User } from "../models/User";
 
 const router = express.Router();
 

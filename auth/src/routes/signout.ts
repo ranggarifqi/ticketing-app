@@ -1,5 +1,5 @@
 import express from "express";
-import { UnauthorizedError } from "../commons/errors/unauthorized-error";
+import { UnauthorizedError } from "@ranggarp-ticketing/common";
 
 const router = express.Router();
 

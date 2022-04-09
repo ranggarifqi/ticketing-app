@@ -1,6 +1,7 @@
 import request from "supertest";
+import { ErrorResponse } from "@ranggarp-ticketing/common";
+
 import { app } from "../../app";
-import { ErrorResponse } from "../../commons/responses/error";
 import { User } from "../../models/User";
 
 const seeds: any = {};

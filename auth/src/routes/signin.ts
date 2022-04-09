@@ -1,12 +1,15 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
+import {
+  UnauthorizedError,
+  validateRequest,
+  UserJWTPayload,
+} from "@ranggarp-ticketing/common";
 
-import { UnauthorizedError } from "../commons/errors/unauthorized-error";
 import { PasswordHasher } from "../commons/PasswordHasher";
 import { INVALID_EMAIL_MSG } from "../commons/validations/errorMessages";
-import { validateRequest } from "../middlewares/request-validation";
-import { User, UserJWTPayload } from "../models/User";
+import { User } from "../models/User";
 
 const router = express.Router();
 

@@ -1,11 +1,6 @@
 import { Schema, model, Model, Document } from "mongoose";
 import { PasswordHasher } from "../commons/PasswordHasher";
 
-export interface UserJWTPayload {
-  id: string;
-  email: string;
-}
-
 export interface UserJSON {
   id: string;
   email: string;

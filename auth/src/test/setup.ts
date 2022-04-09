@@ -7,7 +7,7 @@ let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
   process.env.JWT_SECRET = "testsecret";
-  
+
   mongo = await MongoMemoryServer.create();
   const mongoURI = mongo.getUri();
 
@@ -22,6 +22,6 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await mongo.stop();
   await mongoose.connection.close();
+  await mongo.stop();
 });

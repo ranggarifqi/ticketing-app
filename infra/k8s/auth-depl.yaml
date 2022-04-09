@@ -23,7 +23,6 @@ spec:
                   key: JWT_SECRET
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:

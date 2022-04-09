@@ -5,6 +5,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
+  ingressClassName: nginx
   rules:
     - host: ticketing.local
       http:
@@ -16,4 +17,10 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-  ingressClassName: nginx
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000

@@ -6,6 +6,11 @@ export interface UserJWTPayload {
   email: string;
 }
 
+export interface UserJSON {
+  id: string;
+  email: string;
+}
+
 interface IUser {
   email: string;
   password: string;

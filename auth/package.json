@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --poll src/index.ts",
-    "test": "jest --no-cache",
-    "test:watch": "jest --watchAll --no-cache"
+    "start": "NODE_ENV=development ts-node-dev --poll src/index.ts",
+    "test": "NODE_ENV=test jest --no-cache",
+    "test:watch": "NODE_ENV=test jest --watchAll --no-cache"
   },
   "jest": {
     "preset": "ts-jest",

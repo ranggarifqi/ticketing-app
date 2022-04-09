@@ -90,3 +90,12 @@ it("returns a 400 if there's an existing email", async () => {
     ],
   });
 });
+
+it("sets a cookie after succesfull signup", async () => {
+  const response = await request(app).post("/api/users/signup").send({
+    email: "test@test.com",
+    password: "test123",
+  });
+
+  expect(response.get('Set-Cookie')).toBeDefined()
+});

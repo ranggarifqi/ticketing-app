@@ -16,6 +16,14 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: ranggarifqi/ticketing-app-ticket
+      context: ticket
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
     - image: ranggarifqi/ticketing-app-client
       context: client
       docker:
@@ -24,3 +32,4 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    

@@ -3,6 +3,7 @@ import "express-async-errors"; // This module will enable us to use `throw` keyw
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, NotFoundError } from "@ranggarp-ticketing/common";
+import { createTicketRouter } from "./routes/new";
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   })
 );
+
+app.use(createTicketRouter);
 
 // Example case of throwing in an async handler. On default behaviour, we would need to use `next()`
 app.all("*", async () => {

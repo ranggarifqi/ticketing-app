@@ -4,6 +4,7 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, NotFoundError } from "@ranggarp-ticketing/common";
 import { createTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(
 );
 
 app.use(createTicketRouter);
+app.use(showTicketRouter);
 
 // Example case of throwing in an async handler. On default behaviour, we would need to use `next()`
 app.all("*", async () => {

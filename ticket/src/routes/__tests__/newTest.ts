@@ -15,7 +15,7 @@ describe("test for auth", () => {
     expect(response.status).toEqual(401);
   });
 
-  it.only("returns a status other than 401 if the user is signed in", async () => {
+  it("returns a status other than 401 if the user is signed in", async () => {
     const cookie = signIn()
     const response = await request(app)
       .post("/api/tickets")

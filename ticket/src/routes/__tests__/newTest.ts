@@ -72,17 +72,56 @@ describe("Test for authenticated users", () => {
     interface TestCase {
       title: string;
       price?: any;
+      expected: any;
     }
     const testCases: TestCase[] = [
-      { title: "asdf", price: -10 },
-      { title: "asdf", price: "asdf" },
-      { title: "asdf" },
+      {
+        title: "asdf",
+        price: -10,
+        expected: {
+          errors: [
+            {
+              message: "Must be a float & greater or equal than 0",
+              field: "price",
+            },
+          ],
+        },
+      },
+      {
+        title: "asdf",
+        price: "    ",
+        expected: {
+          errors: [
+            {
+              message: "Must be a float & greater or equal than 0",
+              field: "price",
+            },
+          ],
+        },
+      },
+      {
+        title: "asdf",
+        expected: {
+          errors: [
+            {
+              message: "Must be a float & greater or equal than 0",
+              field: "price",
+            },
+            {
+              message: "Cannot be empty",
+              field: "price",
+            },
+          ],
+        },
+      },
     ];
 
-    testCases.forEach((testCase) => {
-      it(`price = ${testCase.price}`, async () => {
-        const response = await req.send(testCase);
+    testCases.forEach(({ expected, ...payload }) => {
+      it(`price = ${payload.price}`, async () => {
+        const response = await req.send(payload);
         expect(response.status).toEqual(400);
+
+        expect(response.body).toMatchObject<ErrorResponse>(expected);
       });
     });
   });

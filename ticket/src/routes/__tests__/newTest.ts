@@ -2,6 +2,7 @@ import { ErrorResponse } from "@ranggarp-ticketing/common";
 import request from "supertest";
 
 import { app } from "../../app";
+import { Ticket } from "../../models/Ticket";
 import { signIn } from "../../test/auth-helper";
 
 it("has a route handler listening to /api/tickets for post requests", async () => {
@@ -123,7 +124,19 @@ describe("Test for authenticated users", () => {
   });
 
   it("creates a ticket with valid inputs", async () => {
+    const ticketsBefore = await Ticket.find({});
+    expect(ticketsBefore).toHaveLength(0);
+
     const response = await req.send({ title: "Ticket 1", price: 10 });
-    expect(response.status).toEqual(200)
+    expect(response.status).toEqual(201);
+    expect(response.body.title).toEqual("Ticket 1");
+    expect(response.body.price).toEqual(10);
+    expect(response.body.userId).toEqual("asdsada");
+
+    const ticketsAfter = await Ticket.find({});
+    expect(ticketsAfter).toHaveLength(1);
+    expect(ticketsAfter[0].title).toEqual("Ticket 1")
+    expect(ticketsAfter[0].price).toEqual(10)
+    expect(ticketsAfter[0].userId).toEqual("asdsada")
   });
 });

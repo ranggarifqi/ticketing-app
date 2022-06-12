@@ -55,10 +55,6 @@ describe("Test for authenticated users", () => {
         expect(response.body).toMatchObject<ErrorResponse>({
           errors: [
             {
-              message: "Must be alphanumeric",
-              field: "title",
-            },
-            {
               message: "Cannot be empty",
               field: "title",
             },
@@ -126,5 +122,8 @@ describe("Test for authenticated users", () => {
     });
   });
 
-  // it("creates a ticket with valid inputs", async () => {});
+  it("creates a ticket with valid inputs", async () => {
+    const response = await req.send({ title: "Ticket 1", price: 10 });
+    expect(response.status).toEqual(200)
+  });
 });

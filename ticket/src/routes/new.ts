@@ -16,8 +16,6 @@ router.post(
   [
     body("title")
       .trim()
-      .isAlphanumeric()
-      .withMessage("Must be alphanumeric")
       .notEmpty()
       .withMessage("Cannot be empty"),
     body("price")

@@ -7,13 +7,6 @@ import { Ticket } from "../../models/Ticket";
 import { signIn } from "../../test/auth-helper";
 import { mongoObjectID } from "../../test/factories";
 
-it("has a route handler listening to /api/tickets for put requests", async () => {
-  const objectId = mongoObjectID();
-  const response = await request(app).put(`/api/tickets/${objectId}`).send({});
-
-  expect(response.status).not.toEqual(404);
-});
-
 it("should throw 401 if auth token is not provided", async () => {
   const objectId = mongoObjectID();
   const response = await request(app).put(`/api/tickets/${objectId}`).send({});

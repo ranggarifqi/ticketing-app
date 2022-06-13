@@ -1,6 +1,6 @@
 import { Model, Document, Schema, model } from "mongoose";
 
-interface ITicket {
+export interface ITicket {
   title: string;
   price: number;
   userId: string;

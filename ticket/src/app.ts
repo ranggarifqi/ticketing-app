@@ -6,6 +6,7 @@ import { errorHandler, NotFoundError } from "@ranggarp-ticketing/common";
 import { createTicketRouter } from "./routes/new";
 import { showTicketRouter } from "./routes/show";
 import { listTicketRouter } from "./routes/list";
+import { updateTicketRouter } from "./routes/update";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(
 app.use(createTicketRouter);
 app.use(showTicketRouter);
 app.use(listTicketRouter);
+app.use(updateTicketRouter);
 
 // Example case of throwing in an async handler. On default behaviour, we would need to use `next()`
 app.all("*", async () => {

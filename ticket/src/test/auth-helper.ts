@@ -8,9 +8,9 @@ interface UserJSON {
   email: string;
 }
 
-export const signIn = () => {
+export const signIn = (payload?: UserJSON) => {
   // Build a JWT payload. { id, email }
-  const payload: UserJSON = {
+  payload = payload ?? {
     id: "asdsada",
     email: "test@test.com",
   };

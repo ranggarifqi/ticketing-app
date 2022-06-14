@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 import {
   jwtAuth,
@@ -24,6 +24,11 @@ router.put(
   "/api/tickets/:id",
   jwtAuth,
   [
+    param("id")
+      .isMongoId()
+      .withMessage("Should be a Mongo ObjectID")
+      .notEmpty()
+      .withMessage("Should not be empty"),
     body("title").trim().notEmpty().withMessage("Cannot be empty"),
     body("price")
       .isFloat({

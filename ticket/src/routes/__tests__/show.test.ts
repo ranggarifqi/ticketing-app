@@ -1,8 +1,22 @@
+import { ErrorResponse } from "@ranggarp-ticketing/common";
 import request from "supertest";
 
 import { app } from "../../app";
 import { Ticket } from "../../models/Ticket";
 import { mongoObjectID } from "../../test/factories";
+
+it("should returns a 400 if no mongo objectID provided", async () => {
+  const response = await request(app).get(`/api/tickets/randomstr`).send();
+  expect(response.status).toEqual(400);
+  expect(response.body).toMatchObject<ErrorResponse>({
+    errors: [
+      {
+        message: "Should be a Mongo ObjectID",
+        field: "id",
+      },
+    ],
+  });
+});
 
 it("should returns a 404 if the ticket is not found", async () => {
   const id = mongoObjectID();

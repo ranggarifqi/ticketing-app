@@ -104,97 +104,117 @@ describe("when authenticated", () => {
   });
 
   describe("When using invalid payload, should return 400", () => {
-    let req: request.Test;
-
-    beforeEach(() => {
-      const cookie = signIn();
-      req = request(app)
-        .put(`/api/tickets/${seed.ticket.id}`)
-        .set("Cookie", cookie);
-    });
-
-    describe("When invalid title is provided", () => {
-      interface TestCase {
-        title?: string;
-        price: number;
-      }
-      const testCases: TestCase[] = [
-        { title: "", price: 10 },
-        { title: "      ", price: 10 },
-        { price: 10 },
-      ];
-
-      testCases.forEach((testCase) => {
-        it(`title = ${testCase.title}`, async () => {
-          const response = await req.send(testCase);
-          expect(response.status).toEqual(400);
-
-          expect(response.body).toMatchObject<ErrorResponse>({
-            errors: [
-              {
-                message: "Cannot be empty",
-                field: "title",
-              },
-            ],
-          });
+    it("should returns a 400 if no mongo objectID provided", async () => {
+      const response = await request(app)
+        .put(`/api/tickets/randomstr`)
+        .set("Cookie", cookie)
+        .send({
+          title: "Ticket 1 edit",
+          price: 11,
         });
+
+      expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject<ErrorResponse>({
+        errors: [
+          {
+            message: "Should be a Mongo ObjectID",
+            field: "id",
+          },
+        ],
       });
     });
 
-    describe("When invalid price is provided", () => {
-      interface TestCase {
-        title: string;
-        price?: any;
-        expected: any;
-      }
-      const testCases: TestCase[] = [
-        {
-          title: "asdf",
-          price: -10,
-          expected: {
-            errors: [
-              {
-                message: "Must be a float & greater or equal than 0",
-                field: "price",
-              },
-            ],
-          },
-        },
-        {
-          title: "asdf",
-          price: "    ",
-          expected: {
-            errors: [
-              {
-                message: "Must be a float & greater or equal than 0",
-                field: "price",
-              },
-            ],
-          },
-        },
-        {
-          title: "asdf",
-          expected: {
-            errors: [
-              {
-                message: "Must be a float & greater or equal than 0",
-                field: "price",
-              },
-              {
-                message: "Cannot be empty",
-                field: "price",
-              },
-            ],
-          },
-        },
-      ];
+    describe("test for body", () => {
+      let req: request.Test;
 
-      testCases.forEach(({ expected, ...payload }) => {
-        it(`price = ${payload.price}`, async () => {
-          const response = await req.send(payload);
-          expect(response.status).toEqual(400);
+      beforeEach(() => {
+        req = request(app)
+          .put(`/api/tickets/${seed.ticket.id}`)
+          .set("Cookie", cookie);
+      });
+      describe("When invalid title is provided", () => {
+        interface TestCase {
+          title?: string;
+          price: number;
+        }
+        const testCases: TestCase[] = [
+          { title: "", price: 10 },
+          { title: "      ", price: 10 },
+          { price: 10 },
+        ];
 
-          expect(response.body).toMatchObject<ErrorResponse>(expected);
+        testCases.forEach((testCase) => {
+          it(`title = ${testCase.title}`, async () => {
+            const response = await req.send(testCase);
+            expect(response.status).toEqual(400);
+
+            expect(response.body).toMatchObject<ErrorResponse>({
+              errors: [
+                {
+                  message: "Cannot be empty",
+                  field: "title",
+                },
+              ],
+            });
+          });
+        });
+      });
+
+      describe("When invalid price is provided", () => {
+        interface TestCase {
+          title: string;
+          price?: any;
+          expected: any;
+        }
+        const testCases: TestCase[] = [
+          {
+            title: "asdf",
+            price: -10,
+            expected: {
+              errors: [
+                {
+                  message: "Must be a float & greater or equal than 0",
+                  field: "price",
+                },
+              ],
+            },
+          },
+          {
+            title: "asdf",
+            price: "    ",
+            expected: {
+              errors: [
+                {
+                  message: "Must be a float & greater or equal than 0",
+                  field: "price",
+                },
+              ],
+            },
+          },
+          {
+            title: "asdf",
+            expected: {
+              errors: [
+                {
+                  message: "Must be a float & greater or equal than 0",
+                  field: "price",
+                },
+                {
+                  message: "Cannot be empty",
+                  field: "price",
+                },
+              ],
+            },
+          },
+        ];
+
+        testCases.forEach(({ expected, ...payload }) => {
+          it(`price = ${payload.price}`, async () => {
+            const response = await req.send(payload);
+            expect(response.status).toEqual(400);
+
+            expect(response.body).toMatchObject<ErrorResponse>(expected);
+          });
         });
       });
     });
